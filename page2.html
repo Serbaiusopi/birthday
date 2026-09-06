@@ -690,8 +690,8 @@
         <button class="nav-arrow" id="prevPage">❮</button>
         <div class="page-dots">
             <span class="dot active" data-page="2">●</span>
+            <span class="dot" data-page="photo">○</span>
             <span class="dot" data-page="1">○</span>
-            <span class="dot" data-page="0">○</span>
         </div>
         <button class="nav-arrow" id="nextPage">❯</button>
     </div>
@@ -824,13 +824,18 @@
         modal.addEventListener('click', (e) => {
             if (e.target === modal) modal.classList.remove('show');
         });
-    
 
         // ============================================================
         //  5. ناوبری
         // ============================================================
-        const currentPage = 2;
-        const pages = ['First-page.html', 'page2.html'];
+        // ============================================================
+        //  5. ناوبری - درسته
+        // ============================================================
+        // ============================================================
+        //  5. ناوبری - حالت برعکس
+        // ============================================================
+        const pages = ['page-photo.html', 'First-page.html', 'page2.html'];
+        const currentPage = 3; // صفحه ۲ = 3
 
         function goToPage(pageNum) {
             if (pageNum >= 1 && pageNum <= pages.length) {
@@ -841,18 +846,30 @@
             }
         }
 
-        document.getElementById('prevPage').addEventListener('click', function () {
-            if (currentPage < pages.length - 1) goToPage(currentPage + 1);
+        // ❮ (چپ) ← میره به صفحه بعدی (1)
+        document.getElementById('prevPage').addEventListener('click', () => {
+            if (currentPage < pages.length) {
+                goToPage(currentPage + 1);
+            } else {
+                goToPage(1);
+            }
         });
 
-        document.getElementById('nextPage').addEventListener('click', function () {
-            if (currentPage > 0) goToPage(currentPage - 1);
+        // ❯ (راست) ← میره به صفحه قبلی (2)
+        document.getElementById('nextPage').addEventListener('click', () => {
+            if (currentPage > 1) {
+                goToPage(currentPage - 1);
+            } else {
+                goToPage(pages.length);
+            }
         });
 
         document.querySelectorAll('.dot').forEach(dot => {
             dot.addEventListener('click', () => {
-                const pageNum = parseInt(dot.dataset.page);
-                if (pageNum !== currentPage) goToPage(pageNum);
+                const page = dot.dataset.page;
+                if (page === 'photo') goToPage(1);
+                else if (page === '1') goToPage(2);
+                else if (page === '2') goToPage(3);
             });
         });
 
