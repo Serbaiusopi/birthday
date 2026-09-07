@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;700&display=swap"
         rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
-    <!-- ===== کتابخانه کانفتی ===== -->
     <style>
         /* ===== جلوگیری از سفید شدن ===== */
         html {
@@ -46,6 +45,39 @@
             direction: rtl;
             opacity: 0;
             transition: opacity 0.6s ease-in-out;
+        }
+
+        /* ========== ستاره‌های پس‌زمینه ========== */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background: #FFF;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #FFF, 0 0 15px #FFF, 0 0 25px #FFF, 0 0 35px #00FFFF, 0 0 45px #00FFFF;
+            animation: twinkle linear infinite;
+        }
+
+        @keyframes twinkle {
+
+            0%,
+            100% {
+                opacity: 0.9;
+            }
+
+            50% {
+                opacity: 0.3;
+            }
         }
 
         /* ========== بادکنک‌های قلبی ========== */
@@ -140,6 +172,7 @@
             align-items: center;
             gap: 15px;
             position: relative;
+            z-index: 2;
         }
 
         /* ========== اسم هنری Zoha ========== */
@@ -610,6 +643,9 @@
 
 <body>
 
+    <!-- ===== ستاره‌های پس‌زمینه ===== -->
+    <div class="stars" id="starsContainer"></div>
+
     <!-- ===== بادکنک‌های قلبی ===== -->
     <div id="balloonsContainer"></div>
 
@@ -686,59 +722,30 @@
 
     <script>
         // ============================================================
-        //  1. کانفتی فقط از چپ و راست
+        //  0. تنظیم ستاره‌ها
         // ============================================================
-        function launchConfetti() {
-            // کانفتی از چپ
-            confetti({
-                particleCount: 100,
-                spread: 80,
-                origin: { x: 0, y: 0.7 },
-                colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ff8800', '#ffd700']
-            });
-
-            // کانفتی از راست
-            setTimeout(() => {
-                confetti({
-                    particleCount: 100,
-                    spread: 80,
-                    origin: { x: 1, y: 0.7 },
-                    colors: ['#ff6b6b', '#feca57', '#48dbfb', '#ff9ff3', '#ffd700', '#5f27cd']
-                });
-            }, 200);
-
-            // کانفتی از چپ (مرحله دوم)
-            setTimeout(() => {
-                confetti({
-                    particleCount: 70,
-                    spread: 60,
-                    origin: { x: 0, y: 0.6 },
-                    colors: ['#ff9f43', '#00d2d3', '#54a0ff', '#ff1493']
-                });
-            }, 400);
-
-            // کانفتی از راست (مرحله دوم)
-            setTimeout(() => {
-                confetti({
-                    particleCount: 70,
-                    spread: 60,
-                    origin: { x: 1, y: 0.6 },
-                    colors: ['#ff6348', '#7bed9f', '#70a1ff', '#e056fd']
-                });
-            }, 600);
-
+        function setupStars() {
+            const starsContainer = document.getElementById('starsContainer');
+            const numberOfStars = 125;
+            starsContainer.innerHTML = '';
+            for (let i = 0; i < numberOfStars; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.left = `${Math.random() * 100}%`;
+                const minSize = 1.5;
+                const maxSize = 4;
+                const starSize = Math.random() * (maxSize - minSize) + minSize;
+                star.style.width = `${starSize}px`;
+                star.style.height = `${starSize}px`;
+                const twinkleDuration = Math.random() * 3 + 1;
+                star.style.animationDuration = `${twinkleDuration}s`;
+                starsContainer.appendChild(star);
+            }
         }
 
         // ============================================================
-        //  2. نمایش نرم صفحه بعد از لود (Fade In) + کانفتی
-        // ============================================================
-        window.addEventListener('load', function () {
-            document.body.style.opacity = '1';
-            setTimeout(launchConfetti, 500);
-        });
-
-        // ============================================================
-        //  3. بادکنک‌های قلبی
+        //  1. بادکنک‌های قلبی
         // ============================================================
         function createBalloons() {
             const container = document.getElementById('balloonsContainer');
@@ -774,7 +781,7 @@
         }
 
         // ============================================================
-        //  4. ویس
+        //  2. ویس
         // ============================================================
         const audioFile = 'assets/audio-2026-09-03-01-16-33.mp3';
         const audio = new Audio(audioFile);
@@ -847,7 +854,7 @@
         startRandomWave();
 
         // ============================================================
-        //  5. نامه
+        //  3. نامه
         // ============================================================
         const modal = document.getElementById('letterModal');
         const envelopeBtn = document.getElementById('envelopeBtn');
@@ -866,16 +873,17 @@
         });
 
         // ============================================================
-        //  6. ناوبری
+        //  4. نمایش نرم صفحه
         // ============================================================
+        window.addEventListener('load', function () {
+            document.body.style.opacity = '1';
+        });
+
         // ============================================================
-        //  6. ناوبری - درسته
-        // ============================================================
-        // ============================================================
-        //  6. ناوبری - حالت برعکس
+        //  5. ناوبری - حالت برعکس
         // ============================================================
         const pages = ['page-photo.html', 'First-page.html', 'page2.html'];
-        const currentPage = 2; // صفحه ۱ = 2
+        const currentPage = 2;
 
         function goToPage(pageNum) {
             if (pageNum >= 1 && pageNum <= pages.length) {
@@ -886,7 +894,6 @@
             }
         }
 
-        // ❮ (چپ) ← میره به صفحه بعدی (3)
         document.getElementById('prevPage').addEventListener('click', () => {
             if (currentPage < pages.length) {
                 goToPage(currentPage + 1);
@@ -895,7 +902,6 @@
             }
         });
 
-        // ❯ (راست) ← میره به صفحه قبلی (1)
         document.getElementById('nextPage').addEventListener('click', () => {
             if (currentPage > 1) {
                 goToPage(currentPage - 1);
@@ -914,9 +920,11 @@
         });
 
         // ============================================================
-        //  7. اجرا
+        //  6. اجرا
         // ============================================================
         document.addEventListener('DOMContentLoaded', () => {
+            setupStars();
+            window.addEventListener('resize', setupStars);
             createBalloons();
         });
     </script>

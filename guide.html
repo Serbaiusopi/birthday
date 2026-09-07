@@ -29,8 +29,6 @@
             box-sizing: border-box;
         }
 
-
-
         html,
         body {
             width: 100%;
@@ -47,6 +45,38 @@
             font-family: 'Tahoma', sans-serif;
             background-color: #000;
             direction: rtl;
+        }
+
+        /* ستاره‌های پس‌زمینه */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            background: #FFF;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #FFF, 0 0 15px #FFF, 0 0 25px #FFF, 0 0 35px #00FFFF, 0 0 45px #00FFFF;
+            animation: twinkle linear infinite;
+        }
+
+        @keyframes twinkle {
+
+            0%,
+            100% {
+                opacity: 0.9;
+            }
+
+            50% {
+                opacity: 0.3;
+            }
         }
 
         /* کانتینر اصلی */
@@ -90,7 +120,8 @@
         /* لیست نکات */
         .tips-list {
             text-align: right;
-            margin-bottom: 35px;
+            margin-bottom: 25px;
+            width: 100%;
         }
 
         .tip-item {
@@ -113,41 +144,89 @@
             text-align: right;
         }
 
-        /* دکمه شروع */
-        .start-btn {
-            background-color: #1da9f9;
-            color: rgb(243, 243, 243);
+        /* ===== باکس رمز ===== */
+        .password-box {
+            width: 100%;
+            max-width: 320px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .password-box label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95em;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 2px solid rgba(255, 215, 0, 0.4);
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            font-size: 1.1em;
+            text-align: center;
+            direction: ltr;
+            font-family: 'Tahoma', sans-serif;
+            transition: all 0.3s ease;
+            outline: none;
+            letter-spacing: 3px;
+        }
+
+        .password-input:focus {
+            border-color: #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .password-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+            letter-spacing: 1px;
+        }
+
+        .password-error {
+            color: #ff4444;
+            font-size: 0.85em;
+            height: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .password-error.show {
+            opacity: 1;
+        }
+
+        .password-submit-btn {
+            background: linear-gradient(135deg, #ffd700, #f0a500);
+            color: #000;
             border: none;
             padding: 14px 40px;
             font-size: 1.2em;
             font-family: 'Tahoma', sans-serif;
-            border-radius: 10px;
+            border-radius: 12px;
             cursor: pointer;
             font-weight: bold;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(27, 200, 253, 0.4);
+            box-shadow: 0 4px 25px rgba(255, 215, 0, 0.3);
+            width: 100%;
+            margin-top: 5px;
         }
 
-        .start-btn:hover {
-            transform: scale(1.05);
+        .password-submit-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 35px rgba(255, 215, 0, 0.5);
         }
 
-        .start-btn:active {
-            transform: scale(0.98);
-            background-color: black;
+        .password-submit-btn:active {
+            transform: scale(0.97);
         }
 
         button {
             -webkit-tap-highlight-color: transparent;
             outline: none;
-        }
-
-        .envelope-btn,
-        .play-btn,
-        .nav-arrow,
-        .dot {
-            outline: none !important;
-            -webkit-tap-highlight-color: transparent;
         }
 
         /* استایل موبایل */
@@ -170,20 +249,45 @@
                 min-width: 35px;
             }
 
-            .start-btn {
+            .password-box {
+                max-width: 280px;
+            }
+
+            .password-input {
+                padding: 12px 14px;
+                font-size: 1em;
+            }
+
+            .password-submit-btn {
                 padding: 12px 30px;
                 font-size: 1.1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .password-box {
+                max-width: 100%;
+            }
+
+            .password-input {
+                font-size: 0.9em;
+                padding: 10px 12px;
+            }
+
+            .password-submit-btn {
+                font-size: 1em;
+                padding: 10px 20px;
             }
         }
     </style>
 </head>
 
 <body>
-    <div class="stars"></div>
+    <div class="stars" id="starsContainer"></div>
 
     <div class="container">
         <div class="glass-card">
-            <div class="title">راهنما</div>
+            <div class="title">🔐 راهنما و ورود</div>
 
             <div class="tips-list">
                 <div class="tip-item">
@@ -192,26 +296,102 @@
                 </div>
                 <div class="tip-item">
                     <span class="tip-icon">💎</span>
-                    <span class="tip-text">پایین هر صفحه،دکمه قبلی و بعدی کمکت می‌کنه تا بین صفحات جابه جا بشی</span>
+                    <span class="tip-text">پایین هر صفحه، دکمه قبلی و بعدی کمکت می‌کنه تا بین صفحات جابه جا بشی</span>
                 </div>
                 <div class="tip-item">
-                    <span class="tip-icon">🎁</span>
-                    <span class="tip-text">کلیک کن روی دکمه پایین تا شروع بشه</span>
+                    <span class="tip-icon">🔑</span>
+                    <span class="tip-text">برای ورود، رمز رو وارد کن</span>
                 </div>
             </div>
 
-            <button class="start-btn" id="startBtn">شروع کن 🎂</button>
+            <!-- ===== باکس رمز ===== -->
+            <div class="password-box">
+                <label>🔑 رمز ورود را وارد کن</label>
+                <input type="password" class="password-input" id="passwordInput" placeholder="••••••" maxlength="20">
+                <div class="password-error" id="passwordError">❌ رمز اشتباه است! دوباره تلاش کن</div>
+                <button class="password-submit-btn" id="submitBtn">🎂 ورود</button>
+            </div>
+
         </div>
     </div>
 
     <script>
-        
-        document.getElementById('startBtn').addEventListener('click', function () {
-            window.location.href = 'page-photo.html';
+        // ========== تنظیم ستاره‌ها ==========
+        function setupStars() {
+            const starsContainer = document.getElementById('starsContainer');
+            const numberOfStars = 125;
+            starsContainer.innerHTML = '';
+            for (let i = 0; i < numberOfStars; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.left = `${Math.random() * 100}%`;
+                const minSize = 1.5;
+                const maxSize = 4;
+                const starSize = Math.random() * (maxSize - minSize) + minSize;
+                star.style.width = `${starSize}px`;
+                star.style.height = `${starSize}px`;
+                const twinkleDuration = Math.random() * 3 + 1;
+                star.style.animationDuration = `${twinkleDuration}s`;
+                starsContainer.appendChild(star);
+            }
+        }
+
+        const CORRECT_PASSWORD = "1888";
+
+        const passwordInput = document.getElementById('passwordInput');
+        const submitBtn = document.getElementById('submitBtn');
+        const errorMsg = document.getElementById('passwordError');
+
+        function checkPassword() {
+            const enteredPassword = passwordInput.value.trim();
+
+            if (enteredPassword === CORRECT_PASSWORD) {
+                // رمز درست - برو به صفحه بعد
+                errorMsg.classList.remove('show');
+                document.querySelector('.glass-card').style.transition = 'opacity 0.6s ease-out';
+                document.querySelector('.glass-card').style.opacity = '0';
+                setTimeout(() => {
+                    window.location.href = 'page-photo.html';
+                }, 600);
+            } else {
+                // رمز اشتباه
+                errorMsg.classList.add('show');
+                passwordInput.style.borderColor = '#ff4444';
+                passwordInput.style.boxShadow = '0 0 20px rgba(255, 68, 68, 0.2)';
+                setTimeout(() => {
+                    passwordInput.style.borderColor = 'rgba(255, 215, 0, 0.4)';
+                    passwordInput.style.boxShadow = 'none';
+                }, 1000);
+                passwordInput.value = '';
+                passwordInput.focus();
+            }
+        }
+
+        // دکمه ورود
+        submitBtn.addEventListener('click', checkPassword);
+
+        // Enter key
+        passwordInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                checkPassword();
+            }
         });
 
-        setupStars();
-        window.addEventListener('resize', setupStars);
+        // پاک کردن خطا هنگام تایپ
+        passwordInput.addEventListener('input', () => {
+            errorMsg.classList.remove('show');
+            passwordInput.style.borderColor = 'rgba(255, 215, 0, 0.4)';
+            passwordInput.style.boxShadow = 'none';
+        });
+
+        // ========== اجرای اولیه ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            setupStars();
+            window.addEventListener('resize', setupStars);
+            passwordInput.focus();
+        });
     </script>
 </body>
 

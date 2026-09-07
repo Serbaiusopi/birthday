@@ -47,6 +47,39 @@
             transition: opacity 0.6s ease-in-out;
         }
 
+        /* ========== ستاره‌های پس‌زمینه ========== */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background: #FFF;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #FFF, 0 0 15px #FFF, 0 0 25px #FFF, 0 0 35px #00FFFF, 0 0 45px #00FFFF;
+            animation: twinkle linear infinite;
+        }
+
+        @keyframes twinkle {
+
+            0%,
+            100% {
+                opacity: 0.9;
+            }
+
+            50% {
+                opacity: 0.3;
+            }
+        }
+
         /* ========== بارش برف ========== */
         .snowflake {
             position: fixed;
@@ -55,7 +88,7 @@
             font-size: 1.4em;
             animation: fallSnow linear infinite;
             pointer-events: none;
-            z-index: 0;
+            z-index: 1;
             opacity: 0.6;
             text-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
             user-select: none;
@@ -626,6 +659,9 @@
 
 <body>
 
+    <!-- ===== ستاره‌های پس‌زمینه ===== -->
+    <div class="stars" id="starsContainer"></div>
+
     <!-- ===== بارش برف ===== -->
     <div id="snowContainer"></div>
 
@@ -698,6 +734,29 @@
 
     <script>
         // ============================================================
+        //  0. تنظیم ستاره‌ها
+        // ============================================================
+        function setupStars() {
+            const starsContainer = document.getElementById('starsContainer');
+            const numberOfStars = 125;
+            starsContainer.innerHTML = '';
+            for (let i = 0; i < numberOfStars; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.left = `${Math.random() * 100}%`;
+                const minSize = 1.5;
+                const maxSize = 4;
+                const starSize = Math.random() * (maxSize - minSize) + minSize;
+                star.style.width = `${starSize}px`;
+                star.style.height = `${starSize}px`;
+                const twinkleDuration = Math.random() * 3 + 1;
+                star.style.animationDuration = `${twinkleDuration}s`;
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // ============================================================
         //  1. بارش برف
         // ============================================================
         function createSnow() {
@@ -719,9 +778,9 @@
         }
 
         // ============================================================
-        //  2. ویس با تایمر استاندارد (مقاوم در برابر رفت و برگشت)
+        //  2. ویس
         // ============================================================
-        const audioFile = 'assets/';
+        const audioFile = 'assets/audio-2026-09-08-00-15-58.mp3';
         const audio = new Audio(audioFile);
         let isPlaying = false;
         let waveInterval = null;
@@ -731,7 +790,6 @@
         const audioTimeDisplay = document.getElementById('audioTime');
         let isFirstPlay = true;
 
-        // === تابع نمایش زمان کل ===
         function updateTotalTime() {
             if (!isNaN(audio.duration) && audio.duration > 0) {
                 const minutes = Math.floor(audio.duration / 60);
@@ -740,15 +798,12 @@
             }
         }
 
-        // === وقتی فایل لود شد ===
         audio.addEventListener('loadedmetadata', updateTotalTime);
 
-        // === اگه فایل از قبل لود شده بود ===
         if (audio.readyState >= 1) {
             updateTotalTime();
         }
 
-        // === دکمه پلی ===
         playBtn.addEventListener('click', () => {
             if (isPlaying) {
                 audio.pause();
@@ -766,7 +821,6 @@
             }
         });
 
-        // === به‌روزرسانی تایمر ===
         audio.addEventListener('timeupdate', () => {
             if (isPlaying) {
                 const currentMinutes = Math.floor(audio.currentTime / 60);
@@ -775,7 +829,6 @@
             }
         });
 
-        // === پایان ویس ===
         audio.addEventListener('ended', () => {
             playBtn.innerHTML = '▶';
             isPlaying = false;
@@ -783,7 +836,6 @@
             audioTimeDisplay.textContent = '00:00';
         });
 
-        // === موج‌ها ===
         function startRandomWave() {
             if (waveInterval) clearInterval(waveInterval);
             waveInterval = setInterval(() => {
@@ -796,13 +848,11 @@
         startRandomWave();
 
         // ============================================================
-        //  3. نمایش نرم صفحه + لود مجدد فایل صوتی هنگام برگشت
+        //  3. نمایش نرم صفحه
         // ============================================================
         window.addEventListener('load', function () {
             document.body.style.opacity = '1';
-            // لود مجدد فایل صوتی (برای مواقعی که از صفحه اول برمی‌گردی)
             audio.load();
-            // اگر فایل قبلاً لود شده، زمان کل رو نشون بده
             setTimeout(updateTotalTime, 300);
         });
 
@@ -826,16 +876,10 @@
         });
 
         // ============================================================
-        //  5. ناوبری
-        // ============================================================
-        // ============================================================
-        //  5. ناوبری - درسته
-        // ============================================================
-        // ============================================================
         //  5. ناوبری - حالت برعکس
         // ============================================================
         const pages = ['page-photo.html', 'First-page.html', 'page2.html'];
-        const currentPage = 3; // صفحه ۲ = 3
+        const currentPage = 3;
 
         function goToPage(pageNum) {
             if (pageNum >= 1 && pageNum <= pages.length) {
@@ -846,7 +890,6 @@
             }
         }
 
-        // ❮ (چپ) ← میره به صفحه بعدی (1)
         document.getElementById('prevPage').addEventListener('click', () => {
             if (currentPage < pages.length) {
                 goToPage(currentPage + 1);
@@ -855,7 +898,6 @@
             }
         });
 
-        // ❯ (راست) ← میره به صفحه قبلی (2)
         document.getElementById('nextPage').addEventListener('click', () => {
             if (currentPage > 1) {
                 goToPage(currentPage - 1);
@@ -877,6 +919,8 @@
         //  6. اجرا
         // ============================================================
         document.addEventListener('DOMContentLoaded', () => {
+            setupStars();
+            window.addEventListener('resize', setupStars);
             createSnow();
         });
     </script>
