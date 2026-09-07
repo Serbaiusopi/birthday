@@ -112,7 +112,7 @@
         .title {
             color: white;
             font-size: 1.8em;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             font-weight: bold;
             letter-spacing: 2px;
         }
@@ -144,89 +144,108 @@
             text-align: right;
         }
 
-        /* ===== باکس رمز ===== */
-        .password-box {
-            width: 100%;
-            max-width: 320px;
+        /* ===== سه گزینه عددی ===== */
+        .question-text {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1em;
+            margin-bottom: 15px;
+            font-weight: 300;
+        }
+
+        .options-container {
             display: flex;
-            flex-direction: column;
+            gap: 20px;
+            justify-content: center;
             align-items: center;
-            gap: 12px;
-            margin-top: 10px;
-        }
-
-        .password-box label {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.95em;
-        }
-
-        .password-input {
+            flex-wrap: wrap;
             width: 100%;
-            padding: 14px 18px;
-            border-radius: 12px;
-            border: 2px solid rgba(255, 215, 0, 0.4);
-            background: rgba(255, 255, 255, 0.08);
+            max-width: 350px;
+        }
+
+        .option-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
             color: white;
-            font-size: 1.1em;
-            text-align: center;
-            direction: ltr;
+            font-size: 2.2em;
+            font-weight: bold;
             font-family: 'Tahoma', sans-serif;
+            cursor: pointer;
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            -webkit-tap-highlight-color: transparent;
             outline: none;
-            letter-spacing: 3px;
+            user-select: none;
         }
 
-        .password-input:focus {
+        .option-btn:hover {
+            transform: scale(1.05);
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+
+        .option-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* رنگ‌های مختلف برای هر گزینه */
+        .option-btn.option-1 {
+            border-color: rgba(0, 180, 255, 0.4);
+            box-shadow: 0 0 20px rgba(0, 180, 255, 0.1);
+        }
+
+        .option-btn.option-1:hover {
+            border-color: #00b4ff;
+            box-shadow: 0 0 30px rgba(0, 180, 255, 0.3);
+            background: rgba(0, 180, 255, 0.1);
+        }
+
+        .option-btn.option-2 {
+            border-color: rgba(255, 215, 0, 0.4);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+        }
+
+        .option-btn.option-2:hover {
             border-color: #ffd700;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
-            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            background: rgba(255, 215, 0, 0.1);
         }
 
-        .password-input::placeholder {
-            color: rgba(255, 255, 255, 0.3);
-            letter-spacing: 1px;
+        .option-btn.option-3 {
+            border-color: rgba(46, 204, 113, 0.4);
+            box-shadow: 0 0 20px rgba(46, 204, 113, 0.1);
         }
 
-        .password-error {
+        .option-btn.option-3:hover {
+            border-color: #2ecc71;
+            box-shadow: 0 0 30px rgba(46, 204, 113, 0.3);
+            background: rgba(46, 204, 113, 0.1);
+        }
+
+        /* پیام خطا/درستی */
+        .feedback-message {
             color: #ff4444;
-            font-size: 0.85em;
-            height: 20px;
+            font-size: 0.95em;
+            height: 30px;
+            margin-top: 10px;
             opacity: 0;
             transition: opacity 0.3s ease;
         }
 
-        .password-error.show {
+        .feedback-message.show {
             opacity: 1;
         }
 
-        .password-submit-btn {
-            background: linear-gradient(135deg, #ffd700, #f0a500);
-            color: #000;
-            border: none;
-            padding: 14px 40px;
-            font-size: 1.2em;
-            font-family: 'Tahoma', sans-serif;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 25px rgba(255, 215, 0, 0.3);
-            width: 100%;
-            margin-top: 5px;
+        .feedback-message.success {
+            color: #2ecc71;
         }
 
-        .password-submit-btn:hover {
-            transform: scale(1.02);
-            box-shadow: 0 4px 35px rgba(255, 215, 0, 0.5);
-        }
-
-        .password-submit-btn:active {
-            transform: scale(0.97);
-        }
-
-        button {
-            -webkit-tap-highlight-color: transparent;
-            outline: none;
+        .feedback-message.wrong {
+            color: #ff4444;
         }
 
         /* استایل موبایل */
@@ -249,34 +268,34 @@
                 min-width: 35px;
             }
 
-            .password-box {
-                max-width: 280px;
+            .option-btn {
+                width: 70px;
+                height: 70px;
+                font-size: 1.8em;
             }
 
-            .password-input {
-                padding: 12px 14px;
-                font-size: 1em;
+            .options-container {
+                gap: 15px;
             }
 
-            .password-submit-btn {
-                padding: 12px 30px;
-                font-size: 1.1em;
+            .question-text {
+                font-size: 0.9em;
             }
         }
 
         @media (max-width: 480px) {
-            .password-box {
-                max-width: 100%;
+            .option-btn {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5em;
             }
 
-            .password-input {
-                font-size: 0.9em;
-                padding: 10px 12px;
+            .options-container {
+                gap: 12px;
             }
 
-            .password-submit-btn {
-                font-size: 1em;
-                padding: 10px 20px;
+            .title {
+                font-size: 1.3em;
             }
         }
     </style>
@@ -287,7 +306,7 @@
 
     <div class="container">
         <div class="glass-card">
-            <div class="title">🔐 راهنما و ورود</div>
+            <div class="title">🔐 ورود به تولد</div>
 
             <div class="tips-list">
                 <div class="tip-item">
@@ -296,21 +315,22 @@
                 </div>
                 <div class="tip-item">
                     <span class="tip-icon">💎</span>
-                    <span class="tip-text">پایین هر صفحه، دکمه قبلی و بعدی کمکت می‌کنه تا بین صفحات جابه جا بشی</span>
+                    <span class="tip-text">پایین هر صفحه، دکمه قبلی و بعدی کمکت می‌کنه</span>
                 </div>
                 <div class="tip-item">
-                    <span class="tip-icon">🔑</span>
-                    <span class="tip-text">برای ورود، رمز رو وارد کن</span>
+                    <span class="tip-icon">🎯</span>
+                    <span class="tip-text">عدد درست رو انتخاب کن تا وارد بشی</span>
                 </div>
             </div>
 
-            <!-- ===== باکس رمز ===== -->
-            <div class="password-box">
-                <label>🔑 رمز ورود را وارد کن</label>
-                <input type="password" class="password-input" id="passwordInput" placeholder="••••••" maxlength="20">
-                <div class="password-error" id="passwordError">❌ رمز اشتباه است! دوباره تلاش کن</div>
-                <button class="password-submit-btn" id="submitBtn">🎂 ورود</button>
+            <!-- ===== سوال و گزینه‌ها ===== -->
+            <div class="options-container">
+                <button class="option-btn option-1" data-value="87">87</button>
+                <button class="option-btn option-2" data-value="88">88</button>
+                <button class="option-btn option-3" data-value="89">89</button>
             </div>
+
+            <div class="feedback-message" id="feedbackMessage"></div>
 
         </div>
     </div>
@@ -337,60 +357,62 @@
             }
         }
 
-        const CORRECT_PASSWORD = "1888";
+        // ========== گزینه‌ها ==========
+        // 🔑 عدد درست رو اینجا تنظیم کن
+        const CORRECT_ANSWER = 88;
 
-        const passwordInput = document.getElementById('passwordInput');
-        const submitBtn = document.getElementById('submitBtn');
-        const errorMsg = document.getElementById('passwordError');
+        const options = document.querySelectorAll('.option-btn');
+        const feedback = document.getElementById('feedbackMessage');
 
-        function checkPassword() {
-            const enteredPassword = passwordInput.value.trim();
+        options.forEach(btn => {
+            btn.addEventListener('click', function () {
+                const selectedValue = parseInt(this.dataset.value);
 
-            if (enteredPassword === CORRECT_PASSWORD) {
-                // رمز درست - برو به صفحه بعد
-                errorMsg.classList.remove('show');
-                document.querySelector('.glass-card').style.transition = 'opacity 0.6s ease-out';
-                document.querySelector('.glass-card').style.opacity = '0';
-                setTimeout(() => {
-                    window.location.href = 'page-photo.html';
-                }, 600);
-            } else {
-                // رمز اشتباه
-                errorMsg.classList.add('show');
-                passwordInput.style.borderColor = '#ff4444';
-                passwordInput.style.boxShadow = '0 0 20px rgba(255, 68, 68, 0.2)';
-                setTimeout(() => {
-                    passwordInput.style.borderColor = 'rgba(255, 215, 0, 0.4)';
-                    passwordInput.style.boxShadow = 'none';
-                }, 1000);
-                passwordInput.value = '';
-                passwordInput.focus();
-            }
-        }
+                if (selectedValue === CORRECT_ANSWER) {
+                    // ✅ درست
+                    feedback.className = 'feedback-message show success';
+                    feedback.textContent = '✅ آفرین! درست حدس زدی! 🎉';
 
-        // دکمه ورود
-        submitBtn.addEventListener('click', checkPassword);
+                    // غیرفعال کردن دکمه‌ها
+                    options.forEach(b => b.style.pointerEvents = 'none');
 
-        // Enter key
-        passwordInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                checkPassword();
-            }
-        });
+                    // محو شدن و رفتن به صفحه بعد
+                    setTimeout(() => {
+                        document.querySelector('.glass-card').style.transition = 'opacity 0.6s ease-out';
+                        document.querySelector('.glass-card').style.opacity = '0';
+                        setTimeout(() => {
+                            window.location.href = 'page-photo.html';
+                        }, 600);
+                    }, 800);
 
-        // پاک کردن خطا هنگام تایپ
-        passwordInput.addEventListener('input', () => {
-            errorMsg.classList.remove('show');
-            passwordInput.style.borderColor = 'rgba(255, 215, 0, 0.4)';
-            passwordInput.style.boxShadow = 'none';
+                } else {
+                    // ❌ اشتباه
+                    feedback.className = 'feedback-message show wrong';
+                    feedback.textContent = '❌ نه! دوباره امتحان کن 😊';
+
+                    // افکت خطا روی دکمه
+                    this.style.transform = 'scale(0.85)';
+                    this.style.borderColor = '#ff4444';
+                    this.style.boxShadow = '0 0 30px rgba(255, 68, 68, 0.3)';
+
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                        this.style.borderColor = '';
+                        this.style.boxShadow = '';
+                    }, 500);
+
+                    // پاک کردن پیام خطا بعد از 2 ثانیه
+                    setTimeout(() => {
+                        feedback.className = 'feedback-message';
+                    }, 2000);
+                }
+            });
         });
 
         // ========== اجرای اولیه ==========
         document.addEventListener('DOMContentLoaded', () => {
             setupStars();
             window.addEventListener('resize', setupStars);
-            passwordInput.focus();
         });
     </script>
 </body>
