@@ -46,7 +46,16 @@
             background-color: #000;
             direction: rtl;
             opacity: 0;
-            transition: opacity 0.6s ease-in-out;
+            animation: pageFadeIn 1.5s ease-in-out forwards;
+        }
+
+        @keyframes pageFadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
         }
 
         /* ========== ستاره‌های پس‌زمینه ========== */
@@ -534,8 +543,9 @@
         // ============================================================
         //  3. نمایش نرم صفحه
         // ============================================================
+        // انیمیشن pageFadeIn در CSS انجام میشه، دیگه نیازی به این نیست
+        // ولی برای کانفتی هنوز به load نیاز داریم
         window.addEventListener('load', function () {
-            document.body.style.opacity = '1';
             setTimeout(launchConfetti, 500);
         });
 

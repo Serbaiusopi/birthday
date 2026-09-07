@@ -44,7 +44,17 @@
             background-color: #000;
             direction: rtl;
             opacity: 0;
-            transition: opacity 0.6s ease-in-out;
+            animation: pageFadeIn 1.5s ease-in-out forwards;
+        }
+
+        @keyframes pageFadeIn {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
         }
 
         /* ========== ستاره‌های پس‌زمینه ========== */
@@ -873,14 +883,7 @@
         });
 
         // ============================================================
-        //  4. نمایش نرم صفحه
-        // ============================================================
-        window.addEventListener('load', function () {
-            document.body.style.opacity = '1';
-        });
-
-        // ============================================================
-        //  5. ناوبری - حالت برعکس
+        //  4. ناوبری - حالت برعکس
         // ============================================================
         const pages = ['page-photo.html', 'First-page.html', 'page2.html'];
         const currentPage = 2;
@@ -920,7 +923,7 @@
         });
 
         // ============================================================
-        //  6. اجرا
+        //  5. اجرا
         // ============================================================
         document.addEventListener('DOMContentLoaded', () => {
             setupStars();

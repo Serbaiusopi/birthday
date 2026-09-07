@@ -44,7 +44,17 @@
             background-color: #000;
             direction: rtl;
             opacity: 0;
-            transition: opacity 0.6s ease-in-out;
+            animation: pageFadeIn 1.5s ease-in-out forwards;
+        }
+
+        @keyframes pageFadeIn {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
         }
 
         /* ========== ستاره‌های پس‌زمینه ========== */
@@ -848,16 +858,7 @@
         startRandomWave();
 
         // ============================================================
-        //  3. نمایش نرم صفحه
-        // ============================================================
-        window.addEventListener('load', function () {
-            document.body.style.opacity = '1';
-            audio.load();
-            setTimeout(updateTotalTime, 300);
-        });
-
-        // ============================================================
-        //  4. نامه
+        //  3. نامه
         // ============================================================
         const modal = document.getElementById('letterModal');
         const envelopeBtn = document.getElementById('envelopeBtn');
@@ -876,7 +877,7 @@
         });
 
         // ============================================================
-        //  5. ناوبری - حالت برعکس
+        //  4. ناوبری - حالت برعکس
         // ============================================================
         const pages = ['page-photo.html', 'First-page.html', 'page2.html'];
         const currentPage = 3;
@@ -916,7 +917,7 @@
         });
 
         // ============================================================
-        //  6. اجرا
+        //  5. اجرا
         // ============================================================
         document.addEventListener('DOMContentLoaded', () => {
             setupStars();
